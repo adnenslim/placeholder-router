@@ -1,13 +1,27 @@
+
+import { UsersList } from "@/components/users-list/users-list";
 import type { Route } from "./+types/home";
-import { Welcome } from "@/welcome/welcome";
+import type { TUser, TUsers } from "@/types/user";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Json placeholder" },
+    { name: "description", content: "Welcome to React placeholder!" },
   ];
 }
 
-export default function Home() {
-  return <Welcome />;
+export async function loader(): Promise<TUsers> {
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  if (!response.ok) throw new Error("API Error");
+  const data = await response.json();
+  return data;
+}
+
+/* export function HydrateFallback() {
+  return <p>Loading...</p>;
+} */
+
+export default function Home({ loaderData }: { loaderData: TUsers }) {
+  console.log("🚀 ~ Home ~ loaderData:", loaderData)
+  return <UsersList users={loaderData}/>;
 }
