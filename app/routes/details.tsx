@@ -9,7 +9,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function loader({params}: { params: { id: string } }): Promise<TUsers> {
+export async function clientLoader({params}: { params: { id: string } }): Promise<TUsers> {
   const response = await fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`);
   if (!response.ok) throw new Error("API Error");
   const data = await response.json();
@@ -26,9 +26,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
   );
 }
 
-/* export function HydrateFallback() {
+export function HydrateFallback() {
   return <p>Loading...</p>;
-} */
+} 
 
 export default function Details({ loaderData }: { loaderData: TUser }) {
 
