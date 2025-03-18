@@ -16,6 +16,16 @@ export async function loader({params}: { params: { id: string } }): Promise<TUse
   return data;
 }
 
+export function ErrorBoundary({ error }: { error: Error }) {
+  return (
+    <div>
+      <h1>Something went wrong!</h1>
+      <p>{error.message}</p>
+      <button onClick={() => window.history.back()}>Go Back</button>
+    </div>
+  );
+}
+
 /* export function HydrateFallback() {
   return <p>Loading...</p>;
 } */
@@ -25,10 +35,17 @@ export default function Details({ loaderData }: { loaderData: TUser }) {
   const handleBack = () => {
     window.history.back();
   };
-  return <>
-    <button onClick={handleBack}>Back</button> 
-    <h1>{loaderData.username}</h1>
-    <span>{loaderData.name}</span>
-    <span>{loaderData.website}</span>
-  </>;
-}
+
+  return (
+    <>
+      <button onClick={handleBack}>Back</button> 
+      <br />
+      <br />
+      <h1>User details:</h1>
+      <span>{loaderData.username}</span>
+      <br />
+      <span>{loaderData.name}</span>
+      <br />
+      <span>{loaderData.website}</span>
+    </>);
+  }

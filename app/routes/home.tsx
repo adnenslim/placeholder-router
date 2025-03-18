@@ -22,6 +22,5 @@ export async function loader(): Promise<TUsers> {
 } */
 
 export default function Home({ loaderData }: { loaderData: TUsers }) {
-  console.log("🚀 ~ Home ~ loaderData:", loaderData)
   return <UsersList users={loaderData}/>;
 }
