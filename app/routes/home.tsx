@@ -2,6 +2,8 @@
 import { UsersList } from "@/components/users-list/users-list";
 import type { Route } from "./+types/home";
 import type { TUser, TUsers } from "@/types/user";
+import { InputSearch } from "@/components/search/search";
+import { useMemo, useState } from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -22,5 +24,14 @@ export async function loader(): Promise<TUsers> {
 } */
 
 export default function Home({ loaderData }: { loaderData: TUsers }) {
-  return <UsersList users={loaderData}/>;
+  const [search, setSearch] = useState("");
+
+  const filtredData = useMemo(() => loaderData.filter(item => item.name.toLowerCase().includes(search.toLowerCase())), [search, loaderData]);
+
+  return (
+    <>
+      <InputSearch setSearch={setSearch}/>
+      <UsersList users={filtredData}/>
+    </>
+  );
 }
