@@ -1,5 +1,6 @@
+import { jsonPlaceholderApiClient } from "@/support/http/jsonPlaceholderAapiClient";
 import type { Route } from "./+types/details";
-import type { TUser, TUsers } from "@/types/user";
+import type { User } from "@/types/user";
 import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
@@ -13,13 +14,8 @@ export async function loader({
   params,
 }: {
   params: { id: string };
-}): Promise<TUsers> {
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/users/${params.id}`
-  );
-  if (!response.ok) throw new Error("API Error");
-  const data = await response.json();
-  return data;
+}): Promise<User> {
+  return jsonPlaceholderApiClient.getUserById(params.id);
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
@@ -36,7 +32,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
   return <p>Loading...</p>;
 } */
 
-export default function Details({ loaderData }: { loaderData: TUser }) {
+export default function Details({ loaderData }: { loaderData: User }) {
   return (
     <>
       <Link to={"/"}>Back</Link>

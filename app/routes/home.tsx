@@ -1,8 +1,9 @@
 import { UsersList } from "@/components/users-list/users-list";
 import type { Route } from "./+types/home";
-import type { TUsers } from "@/types/user";
 import { InputSearch } from "@/components/search/search";
 import React from "react";
+import type { User } from "@/types/user";
+import { jsonPlaceholderApiClient } from "@/support/http/jsonPlaceholderAapiClient";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,17 +12,10 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-const fetchUser = (): Promise<TUsers> =>
-  fetch("https://jsonplaceholder.typicode.com/users")
-    .then((up) => up.json())
-    .catch(() => {
-      throw new Error("API Error");
-    });
-
 export async function loader({ request }: { request: Request }) {
   const url = new URL(request.url);
   const search = url.searchParams.get("q");
-  let users = await fetchUser();
+  let users = await jsonPlaceholderApiClient.getUsers();
 
   if (search) {
     users = users.filter((u) =>
@@ -37,7 +31,7 @@ export async function loader({ request }: { request: Request }) {
 export default function Home({
   loaderData,
 }: {
-  loaderData: { users: TUsers };
+  loaderData: { users: User[] };
 }) {
   return (
     <div className="flex flex-col items-center space-y-2 my-1">
