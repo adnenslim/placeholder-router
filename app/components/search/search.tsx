@@ -1,5 +1,5 @@
 import { startTransition, useState } from "react";
-import { useFetcher,  useSearchParams } from "react-router";
+import { useFetcher, useSearchParams } from "react-router";
 
 export const InputSearch = () => {
   const [searchParams] = useSearchParams({ q: "" });
@@ -17,14 +17,17 @@ export const InputSearch = () => {
 
   return (
     <fetcher.Form method="post" action="/">
-      <input
-        type="search"
-        name="search"
-        value={search}
-        className={"border p-2 w-96"}
-        onChange={handleChange}
-        placeholder={"Search..."}
-      />
+      <div className="flex items-center gap-1">
+        <div className="text-2xl animate-spin text-blue-700">{fetcher.state === "loading" && "↻"}</div>
+        <input
+          type="search"
+          name="search"
+          value={search}
+          className={"border p-2 w-96"}
+          onChange={handleChange}
+          placeholder={"Search..."}
+        />
+      </div>
     </fetcher.Form>
   );
 };
