@@ -1,6 +1,6 @@
-import { UsersList } from "@/components/users-list/users-list";
 import type { Route } from "./+types/details";
 import type { TUser, TUsers } from "@/types/user";
+import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -31,9 +31,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
 } */
 
 export default function Details({ loaderData }: { loaderData: TUser }) {
-
+  const navigate = useNavigate();
   const handleBack = () => {
-    window.history.back();
+    navigate('/')
   };
 
   return (

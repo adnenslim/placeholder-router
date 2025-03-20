@@ -1,9 +1,8 @@
-
 import { UsersList } from "@/components/users-list/users-list";
 import type { Route } from "./+types/home";
-import type { TUser, TUsers } from "@/types/user";
+import type { TUsers } from "@/types/user";
 import { InputSearch } from "@/components/search/search";
-import { useMemo, useState } from "react";
+import React from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,26 +11,40 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function loader(): Promise<TUsers> {
-  const response = await fetch("https://jsonplaceholder.typicode.com/users");
-  if (!response.ok) throw new Error("API Error");
-  const data = await response.json();
-  return data;
+const fetchUser = (): Promise<TUsers> =>
+  fetch("https://jsonplaceholder.typicode.com/users")
+    .then((up) => up.json())
+    .catch(() => {
+      throw new Error("API Error");
+    });
+
+export async function loader({ request }: { request: Request }) {
+  const url = new URL(request.url);
+  const search = url.searchParams.get("q");
+  let users = await fetchUser();
+
+  if (search) {
+    users = users.filter((u) =>
+      u.username.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    );
+  }
+
+  return {
+    users,
+  };
 }
 
-/* export function HydrateFallback() {
-  return <p>Loading...</p>;
-} */
-
-export default function Home({ loaderData }: { loaderData: TUsers }) {
-  const [search, setSearch] = useState("");
-
-  const filtredData = useMemo(() => loaderData.filter(item => item.name.toLowerCase().includes(search.toLowerCase())), [search, loaderData]);
-
+export default function Home({
+  loaderData,
+}: {
+  loaderData: { users: TUsers };
+}) {
   return (
-    <>
-      <InputSearch setSearch={setSearch}/>
-      <UsersList users={filtredData}/>
-    </>
+    <div className="flex flex-col items-center space-y-2 my-1">
+      <InputSearch />
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <UsersList users={loaderData.users} />
+      </React.Suspense>
+    </div>
   );
 }

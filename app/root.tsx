@@ -1,14 +1,15 @@
+import "./app.css";
 import {
   isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
 import { Header } from "./components/header/header";
 
 export const links: Route.LinksFunction = () => [
@@ -23,6 +24,12 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
 ];
+
+export async function action({ request }: Route.ActionArgs) {
+  let formData = await request.formData();
+  let search = formData.get("search");
+  return redirect(`/?q=${search}`);
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
