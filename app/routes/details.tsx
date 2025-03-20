@@ -1,6 +1,6 @@
 import type { Route } from "./+types/details";
 import type { TUser, TUsers } from "@/types/user";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,8 +9,14 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function loader({params}: { params: { id: string } }): Promise<TUsers> {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`);
+export async function loader({
+  params,
+}: {
+  params: { id: string };
+}): Promise<TUsers> {
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/users/${params.id}`
+  );
   if (!response.ok) throw new Error("API Error");
   const data = await response.json();
   return data;
@@ -31,14 +37,9 @@ export function ErrorBoundary({ error }: { error: Error }) {
 } */
 
 export default function Details({ loaderData }: { loaderData: TUser }) {
-  const navigate = useNavigate();
-  const handleBack = () => {
-    navigate('/')
-  };
-
   return (
     <>
-      <button onClick={handleBack}>Back</button> 
+      <Link to={"/"}>Back</Link>
       <br />
       <br />
       <h1>User details:</h1>
@@ -47,5 +48,6 @@ export default function Details({ loaderData }: { loaderData: TUser }) {
       <span>{loaderData.name}</span>
       <br />
       <span>{loaderData.website}</span>
-    </>);
-  }
+    </>
+  );
+}
