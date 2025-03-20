@@ -17,8 +17,7 @@ export const InputSearch = () => {
 
   return (
     <fetcher.Form method="post" action="/">
-      <div className="flex items-center gap-1">
-        <div className="text-2xl animate-spin text-blue-700">{fetcher.state === "loading" && "↻"}</div>
+      <div className="inline-flex items-center gap-1 relative">
         <input
           type="search"
           name="search"
@@ -27,6 +26,9 @@ export const InputSearch = () => {
           onChange={handleChange}
           placeholder={"Search..."}
         />
+        <div className="text-2xl animate-spin text-blue-700 absolute right-1">
+          {fetcher.state === "loading" && "↻"}
+        </div>
       </div>
     </fetcher.Form>
   );
