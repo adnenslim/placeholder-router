@@ -1,4 +1,4 @@
-import { jsonPlaceholderApiClient } from "@/support/http/jsonPlaceholderAapiClient";
+import { jsonPlaceholderApiClient } from "@/support/http/jsonPlaceholderApiClient";
 import type { Route } from "./+types/details";
 import type { User } from "@/types/user";
 import { Link } from "react-router";

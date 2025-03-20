@@ -3,7 +3,7 @@ import type { Route } from "./+types/home";
 import { InputSearch } from "@/components/search/search";
 import React from "react";
 import type { User } from "@/types/user";
-import { jsonPlaceholderApiClient } from "@/support/http/jsonPlaceholderAapiClient";
+import { jsonPlaceholderApiClient } from "@/support/http/jsonPlaceholderApiClient";
 
 export function meta({}: Route.MetaArgs) {
   return [

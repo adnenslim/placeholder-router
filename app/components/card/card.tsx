@@ -1,10 +1,9 @@
-import type { TUser } from "@/types/user";
+import type { User } from "@/types/user";
 import { Link } from "react-router";
 
 
-type TCardProps = { user: TUser };
 
-export const Card = ({ user }: TCardProps) => {
+export const Card = ({ user }: {user: User}) => {
   return (
     <Link
       to={`/details/${user.id}`}
